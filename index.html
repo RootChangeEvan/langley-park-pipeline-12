@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Langley Park NAP — Workplan Pipeline</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --crimson:      #8B1A1A;
+  --crimson-dark: #6B1010;
+  --crimson-deep: #3D0000;
+  --gold:         #F2C12E;
+  --off-white:    #FAF7F2;
+  --border:       #DDD0C0;
+  --border-light: #EDE5D8;
+  --text:         #1A0A0A;
+  --text-muted:   #6B4040;
+  --radius:       6px;
+}
+body { font-family: 'Open Sans', sans-serif; background: var(--off-white); color: var(--text); line-height: 1.6; min-height: 100vh; }
+
+/* ── HEADER ── */
+.header { background: var(--crimson); color: white; }
+.header-inner { max-width: 980px; margin: 0 auto; padding: 28px 36px 0; }
+.brand { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+.brand-badge {
+  width: 42px; height: 42px; border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.3);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 10px;
+  color: white; text-align: center; line-height: 1.2; flex-shrink: 0;
+}
+.brand-name { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 12px; color: rgba(255,255,255,0.85); text-transform: uppercase; letter-spacing: 0.05em; }
+.brand-sub  { font-size: 11px; color: rgba(255,255,255,0.45); text-transform: uppercase; letter-spacing: 0.04em; }
+hr.rule     { border: none; border-top: 1px solid rgba(255,255,255,0.1); margin-bottom: 18px; }
+.header-eyebrow { font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 5px; }
+.header-title   { font-family: 'Montserrat', sans-serif; font-size: 24px; font-weight: 800; color: white; margin-bottom: 3px; line-height: 1.2; }
+.header-sub     { font-size: 13px; color: rgba(255,255,255,0.5); margin-bottom: 22px; }
+
+/* ── VALUE PROP BANNER ── */
+/* ── WELCOME MODAL ── */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(20,0,0,0.72);
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px;
+  backdrop-filter: blur(3px);
+}
+.modal-overlay.hidden { display: none; }
+.modal-card {
+  background: white; border-radius: 12px;
+  max-width: 640px; width: 100%;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.4);
+  overflow: hidden;
+  animation: modalIn 0.25s ease;
+}
+@keyframes modalIn { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+.modal-top {
+  background: var(--crimson);
+  padding: 28px 32px 24px;
+  position: relative;
+}
+.modal-close {
+  position: absolute; top: 16px; right: 16px;
+  width: 32px; height: 32px; border-radius: 50%;
+  background: rgba(255,255,255,0.12); border: none; cursor: pointer;
+  color: white; font-size: 14px;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s;
+}
+.modal-close:hover { background: rgba(255,255,255,0.22); }
+.modal-eyebrow {
+  font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px;
+}
+.modal-headline {
+  font-family: 'Montserrat', sans-serif; font-size: 22px; font-weight: 800;
+  color: white; line-height: 1.25; margin-bottom: 12px;
+}
+.modal-sub { font-size: 14px; color: rgba(255,255,255,0.75); line-height: 1.65; }
+.modal-body { padding: 24px 32px 28px; }
+.modal-points { list-style: none; display: flex; flex-direction: column; gap: 14px; margin-bottom: 22px; }
+.modal-points li { display: flex; align-items: flex-start; gap: 12px; font-size: 14px; color: #2A0A0A; line-height: 1.5; }
+.modal-point-icon {
+  width: 30px; height: 30px; border-radius: 6px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; font-size: 13px;
+}
+.modal-note {
+  background: #FEF8E1; border: 1px solid #F0D060; border-radius: 6px;
+  padding: 12px 16px; font-size: 12px; color: #6B4A00; line-height: 1.6;
+  display: flex; gap: 10px; align-items: flex-start;
+}
+.modal-note i { color: #C49A0A; flex-shrink: 0; margin-top: 2px; }
+.modal-btn {
+  display: block; width: 100%; margin-top: 18px;
+  background: var(--crimson); color: white; border: none; border-radius: 6px;
+  padding: 14px; font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 700;
+  letter-spacing: 0.04em; text-transform: uppercase; cursor: pointer;
+  transition: background 0.15s;
+}
+.modal-btn:hover { background: var(--crimson-dark); }
+
+/* ── STATUS PANELS ── */
+.status-row {
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding: 16px 0 20px;
+}
+.spanel { background: rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 13px 15px; }
+.spanel-eye { font-family: 'Montserrat', sans-serif; font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.38); margin-bottom: 7px; }
+.spanel-body { font-size: 13px; color: white; line-height: 1.5; }
+.spanel-body strong { font-family: 'Montserrat', sans-serif; font-weight: 800; color: var(--gold); }
+.spanel-sub { font-size: 11px; color: rgba(255,255,255,0.42); margin-top: 5px; line-height: 1.4; }
+.bullet-item { display: flex; align-items: flex-start; gap: 7px; margin-bottom: 5px; font-size: 12px; color: rgba(255,255,255,0.75); line-height: 1.4; }
+.bullet-dot  { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+
+/* ── JOURNEY BAR ── */
+.journey-bar { background: var(--crimson-dark); border-bottom: 2px solid rgba(0,0,0,0.2); }
+.journey-inner { max-width: 980px; margin: 0 auto; padding: 14px 36px; display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; }
+.jphase-top   { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+.jphase-num   { width: 24px; height: 24px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 800; }
+.jphase-label { font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700; line-height: 1.3; }
+.jphase-track { height: 3px; border-radius: 2px; background: rgba(255,255,255,0.1); overflow: hidden; margin-left: 32px; }
+.jphase-fill  { height: 100%; border-radius: 2px; transition: width 0.4s; }
+.jphase-count { font-size: 10px; margin-top: 3px; margin-left: 32px; }
+
+/* ── LAYOUT ── */
+.page { max-width: 980px; margin: 0 auto; padding: 28px 36px 80px; display: grid; grid-template-columns: 1fr 290px; gap: 0; align-items: start; }
+.pipeline { padding-right: 24px; }
+
+/* ── PIPELINE ── */
+.pipeline { min-width: 0; }
+.phase-block { margin-bottom: 36px; }
+.phase-header {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 15px; border-radius: 6px; margin-bottom: 10px;
+}
+.phase-stripe { width: 5px; height: 34px; border-radius: 3px; flex-shrink: 0; }
+.phase-name   { font-family: 'Montserrat', sans-serif; font-size: 16px; font-weight: 800; }
+.phase-dates  { font-size: 12px; margin-top: 2px; opacity: 0.7; }
+.phase-tally  { margin-left: auto; font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700; white-space: nowrap; }
+
+.ms-list { display: flex; flex-direction: column; gap: 6px; }
+.ms {
+  background: white; border: 1px solid var(--border-light);
+  border-left: 4px solid var(--border); border-radius: var(--radius);
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 12px 14px; cursor: pointer;
+  transition: box-shadow 0.15s, border-left-color 0.15s;
+}
+.ms:hover { box-shadow: 0 2px 8px rgba(139,26,26,0.07); }
+.ms.open  { border-left-color: var(--pc); }
+
+.ms-check {
+  width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0; margin-top: 2px;
+  display: flex; align-items: center; justify-content: center; font-size: 10px;
+}
+.done-check       { background: var(--pc); color: white; }
+.inprogress-check { background: white; border: 2px solid var(--pc); }
+.upcoming-check   { background: white; border: 1.5px solid var(--border); }
+
+.ms-body { flex: 1; min-width: 0; }
+.ms-title { font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 700; line-height: 1.35; }
+.ms-sub   { font-size: 12px; color: var(--text-muted); margin-top: 2px; line-height: 1.45; }
+
+/* owner row */
+.ms-owner-row { display: flex; align-items: center; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
+.owner-chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 10px;
+}
+.owner-casa      { background: #FEF0E6; color: #8B3A0A; }
+.owner-rc        { background: #E6EEF8; color: #1A3A6B; }
+.owner-coalition { background: #E8F5E9; color: #1B5E20; }
+.owner-joint     { background: #F3E5F5; color: #4A0072; }
+.owner-steering  { background: #FFF9E6; color: #6B4A00; }
+
+.ms-detail {
+  display: none; font-size: 12px; color: var(--text-muted); line-height: 1.65;
+  margin-top: 11px; padding-top: 11px; border-top: 1px solid var(--border-light);
+}
+.ms.open .ms-detail { display: block; }
+
+.ms-outputs { margin-top: 9px; display: flex; flex-wrap: wrap; gap: 5px; }
+.out-tag { font-size: 11px; padding: 2px 8px; border-radius: 3px; font-family: 'Montserrat', sans-serif; font-weight: 700; background: var(--tag-bg,#F5E6E6); color: var(--tag-color,var(--crimson)); }
+
+.status-btns { display: flex; align-items: center; gap: 5px; margin-top: 10px; }
+.status-btns span { font-size: 11px; color: var(--text-muted); }
+.sbtn {
+  font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.03em;
+  padding: 3px 9px; border-radius: 3px;
+  border: 1px solid var(--border); background: white; cursor: pointer; color: var(--text-muted);
+  transition: all 0.1s;
+}
+.sbtn:hover  { border-color: var(--pc); color: var(--pc); }
+.sbtn.active { background: var(--pc); color: white; border-color: var(--pc); }
+
+.ms-right { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex-shrink: 0; }
+.pill {
+  font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.03em; padding: 3px 9px; border-radius: 3px; white-space: nowrap;
+}
+.pill-done       { background: #F0F9F0; color: #1B5E20; }
+.pill-inprogress { background: #FEF8E1; color: #7A5800; }
+.pill-upcoming   { background: var(--off-white); color: var(--text-muted); }
+.pill-decision   { background: var(--crimson-deep); color: var(--gold); }
+.ms-date { font-size: 11px; color: #B0987A; }
+
+/* ── SIDEBAR ── */
+.sidebar {
+  display: flex; flex-direction: column; gap: 16px;
+  position: sticky; top: 0;
+  height: 100vh; overflow-y: auto;
+  padding: 28px 16px 60px 20px;
+  border-left: 3px solid var(--crimson);
+  background: #F2EAE0;
+  box-shadow: -4px 0 16px rgba(139,26,26,0.07);
+}
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+.sidebar-label {
+  font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 800;
+  letter-spacing: 0.06em; text-transform: uppercase; color: var(--crimson);
+  margin-bottom: 12px; padding-left: 2px;
+}
+
+.side-card {
+  background: white; border: 1px solid var(--border-light); border-radius: 8px; overflow: hidden;
+  margin-right: 4px;
+  flex-shrink: 0;
+}
+.side-card-body { overflow: hidden; }
+.side-card-head {
+  padding: 13px 16px; border-bottom: 1px solid var(--border-light);
+  font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  display: flex; align-items: center; gap: 8px;
+}
+.side-card-body { padding: 12px 14px; }
+
+/* decisions */
+.dec-item {
+  display: flex; align-items: flex-start; gap: 9px;
+  padding: 9px 0; border-bottom: 1px solid var(--border-light);
+}
+.dec-item:last-child { border-bottom: none; padding-bottom: 0; }
+.dec-diamond {
+  width: 20px; height: 20px; background: var(--crimson-deep); border-radius: 3px;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;
+  color: var(--gold); font-size: 8px;
+}
+.dec-title { font-size: 12px; font-weight: 600; color: var(--text); line-height: 1.35; }
+.dec-meta  { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.dec-owner { display: inline-flex; align-items: center; gap: 3px; font-size: 10px; font-weight: 600; padding: 1px 6px; border-radius: 8px; margin-top: 3px; }
+
+/* activity feed */
+.feed-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 9px 0; border-bottom: 1px solid var(--border-light);
+}
+.feed-item:last-child { border-bottom: none; padding-bottom: 0; }
+.feed-dot {
+  width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 5px;
+}
+.feed-text { font-size: 12px; color: var(--text); line-height: 1.4; }
+.feed-time { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+/* tooltip */
+.has-tip { position: relative; cursor: help; }
+.has-tip .tip {
+  display: none; position: absolute; bottom: calc(100% + 6px); left: 50%;
+  transform: translateX(-50%);
+  background: var(--crimson-deep); color: white;
+  font-size: 11px; font-weight: 500; line-height: 1.4;
+  padding: 6px 10px; border-radius: 4px; white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25); z-index: 10;
+  font-family: 'Open Sans', sans-serif; text-transform: none; letter-spacing: 0;
+}
+.has-tip .tip::after {
+  content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+  border: 5px solid transparent; border-top-color: var(--crimson-deep);
+}
+.has-tip:hover .tip { display: block; }
+
+/* clickable journey */
+.jphase { cursor: pointer; border-radius: 4px; padding: 4px 6px; margin: -4px -6px; transition: background 0.15s; }
+.jphase:hover { background: rgba(255,255,255,0.06); }
+
+@media (max-width: 720px) {
+  .page { grid-template-columns: 1fr; padding: 20px 18px 60px; gap: 24px; }
+  .pipeline { padding-right: 0; }
+  .header-inner { padding: 22px 18px 0; }
+  .journey-inner { grid-template-columns: repeat(2,1fr); padding: 12px 18px; }
+  .status-row { grid-template-columns: 1fr; }
+  .sidebar { position: static; }
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <div class="brand">
+      <div class="brand-badge">WE ARE<br>CASA</div>
+      <div>
+        <div class="brand-name">We Are CASA × Root Change</div>
+        <div class="brand-sub">Langley Park · ENOUGH Framework</div>
+      </div>
+    </div>
+    <hr class="rule">
+    <div class="header-eyebrow">Neighborhood Action Plan</div>
+    <div class="header-title">Progress Pipeline & Decision Tracker</div>
+    <div class="header-sub">Langley Park Community Coalition · July 2025 – January 8, 2026</div>
+
+
+
+    <div class="status-row" id="status-row"></div>
+  </div>
+</header>
+
+<div class="journey-bar">
+  <div class="journey-inner" id="journey"></div>
+</div>
+
+<div class="page">
+  <div class="pipeline" id="pipeline"></div>
+  <aside class="sidebar" id="sidebar"></aside>
+</div>
+
+<script>
+const OWNERS = {
+  casa:      { label:'CASA',             cls:'owner-casa' },
+  rc:        { label:'Root Change',      cls:'owner-rc' },
+  coalition: { label:'Coalition',        cls:'owner-coalition' },
+  joint:     { label:'CASA + Root Change', cls:'owner-joint' },
+  steering:  { label:'Steering Committee', cls:'owner-steering' },
+};
+
+const PHASES = [
+  {
+    id:'p1', color:'#8B1A1A', tagBg:'#F5E6E6', tagColor:'#8B1A1A',
+    hBg:'#FDF0F0', hBorder:'#F5D0D0',
+    name:'Phase 1', label:'Alignment & evidence inventory',
+    dates:'July 13 – mid-August 2025',
+    milestones:[
+      { id:'m1', title:'Kick-off with CASA and Steering Committee',
+        sub:'Confirm goals, timeline, roles, and final plan expectations',
+        detail:'Root Change works with CASA and the Steering Committee to confirm goals, timeline, roles, review points, and expectations for the final plan. CASA and the Coalition remain the forward-facing leaders; Root Change provides facilitative and technical scaffolding to support sensemaking, structure decisions, and document progress.',
+        type:'milestone', status:'done', date:'July 13',
+        owners:['joint','steering'],
+        outputs:['Refined workplan','Progress Pipeline & Decision Tracker'] },
+      { id:'m2', title:'Planning rhythm established',
+        sub:'All parties know when input is needed and how decisions are made',
+        detail:'Root Change sets a clear planning rhythm — shared calendar of touchpoints, review cycles, and partner check-ins — so CASA staff, Steering Committee, and partners understand what is happening, when, and what role they play at each stage.',
+        type:'milestone', status:'done', date:'July 20',
+        owners:['rc'],
+        outputs:['Decision-making & review process'] },
+      { id:'m3', title:'Living Evidence & Planning Map created',
+        sub:'All available materials organized by ENOUGH result area and source type',
+        detail:'Root Change organizes assessments, asset maps, interviews, community engagement findings, partner inputs, demographic data, service information, prior planning materials, and ENOUGH guidance into a single accessible format. The map functions both as a facilitated sensemaking tool — used with CASA and the Coalition to surface what is already known and identify gaps — and as an online tracking system that updates throughout the consultancy as new insights are gathered.',
+        type:'milestone', status:'inprogress', date:'Aug 1',
+        owners:['rc','casa'],
+        outputs:['Living Evidence & Planning Map'] },
+    ]
+  },
+  {
+    id:'p2', color:'#A93226', tagBg:'#FFF0EC', tagColor:'#A93226',
+    hBg:'#FFF8F5', hBorder:'#FFD8C8',
+    name:'Phase 2', label:'Synthesis & targeted discovery',
+    dates:'Mid-August – late September 2025',
+    milestones:[
+      { id:'m4', title:'Evidence synthesized across all ENOUGH result areas',
+        sub:'Inputs organized by result area, population, geography, and resident priority',
+        detail:'Using the Living Evidence and Planning Map, Root Change organizes inputs by result area, population, geography, source type, resident priority, partner role, and implementation relevance. Looks for convergence across sources, conflicting interpretations, underrepresented voices, and gaps where the plan needs greater clarity.',
+        type:'milestone', status:'upcoming', date:'Sept 1',
+        owners:['rc'],
+        outputs:['Synthesis memo','Asset and gap analysis'] },
+      { id:'m5', title:'Targeted community discovery activities conducted',
+        sub:'Fill specific evidence gaps; hear from voices missing in existing materials',
+        detail:'Where important gaps emerge, Root Change works with CASA to design targeted discovery activities — sensemaking sessions, resident conversations, youth or caregiver discussions, partner reflections, or engagement with trusted messengers. The Coalition determines which activities are most appropriate. Root Change facilitates in Spanish and English, or provides guidance materials to CASA as needed.',
+        type:'milestone', status:'upcoming', date:'Sept 15',
+        owners:['casa','rc'],
+        outputs:['Targeted discovery plan','Updated evidence map & gap tracker'] },
+      { id:'m6', title:'Synthesis findings approved',
+        sub:'CASA and Steering Committee confirm findings before strategy work begins',
+        detail:'Root Change shares the synthesis memo for review. CASA and the Steering Committee confirm that findings reflect resident experience, that underrepresented voices are present, and that the framing fits Langley Park\'s majority-immigrant, working-class community. Approval unlocks Phase 3.',
+        type:'decision', status:'upcoming', date:'Sept 25',
+        owners:['steering','casa'],
+        outputs:['Approved synthesis findings'] },
+    ]
+  },
+  {
+    id:'p3', color:'#7B241C', tagBg:'#F9EBEA', tagColor:'#7B241C',
+    hBg:'#FDF5F5', hBorder:'#ECC8C5',
+    name:'Phase 3', label:'Strategy, roles & roadmap',
+    dates:'Late September – mid-November 2025',
+    milestones:[
+      { id:'m7', title:'Structured sensemaking sessions with CASA, Coalition, and partners',
+        sub:'Clarify priorities, partner roles, short-term actions, and long-term strategies',
+        detail:'Root Change facilitates structured sensemaking with CASA, the Steering Committee, TA providers, coalition partners, and community leadership. Explores HCZ model elements — place-based impact zones, durable resident representation, coordinated partner roles — adapting them to Langley Park context.',
+        type:'milestone', status:'upcoming', date:'Oct 10',
+        owners:['rc','joint'],
+        outputs:['Strategy framework'] },
+      { id:'m8', title:'Key choices made on priorities and CASA\'s role',
+        sub:'What is grounded in resident experience? What is feasible and fundable? Who leads?',
+        detail:'Root Change helps CASA and the Coalition work through clear choice points: what is most grounded in resident experience, most likely to improve outcomes, feasible for CASA and partners, able to attract investment, and what role CASA should play — convener, coordinator, advocate, organizer, or direct implementer.',
+        type:'decision', status:'upcoming', date:'Oct 25',
+        owners:['steering','casa'],
+        outputs:['Priority action areas','Partner role map'] },
+      { id:'m9', title:'Measurement framework developed',
+        sub:'Outcomes, indicators, milestones, learning questions, data-use considerations',
+        detail:'Root Change develops a measurement framework with outcomes, indicators, milestones, learning questions, and practical data-use considerations — shared definitions, consent, privacy, and partner responsibilities.',
+        type:'milestone', status:'upcoming', date:'Nov 5',
+        owners:['rc'],
+        outputs:['Outcomes & indicators','Data-use considerations'] },
+      { id:'m10', title:'Implementation roadmap completed',
+        sub:'Focused, sequenced roadmap from planning to action',
+        detail:'Root Change produces a focused implementation roadmap integrating strategy, partner roles, measurement, and sequencing. Draws from HCZ and related place-based child and family models, adapted to Langley Park context.',
+        type:'milestone', status:'upcoming', date:'Nov 15',
+        owners:['rc','casa'],
+        outputs:['Implementation roadmap'] },
+    ]
+  },
+  {
+    id:'p4', color:'#512E5F', tagBg:'#F5EEF8', tagColor:'#512E5F',
+    hBg:'#F8F5FC', hBorder:'#DCC8E8',
+    name:'Phase 4', label:'Drafting & final plan',
+    dates:'Mid-November 2025 – January 8, 2026',
+    milestones:[
+      { id:'m11', title:'Full draft Neighborhood Action Plan produced',
+        sub:'Clear, compelling, implementation-ready, aligned with ENOUGH requirements',
+        detail:'Root Change supports CASA in producing a Neighborhood Action Plan including vision, goals, priority areas, strategies, implementation roadmap, partner roles, outcomes, indicators, and accountability structure. Plan can be developed in multiple formats for different audiences.',
+        type:'milestone', status:'upcoming', date:'Nov 30',
+        owners:['rc','casa'],
+        outputs:['Full draft plan'] },
+      { id:'m12', title:'Audience-specific communications products developed',
+        sub:'Resident summary, visual materials, short videos, or web-based story scroll',
+        detail:'Root Change supports optional audience-specific products: a concise resident- and partner-facing summary, visual materials, short videos featuring community voices, or a web-based story scroll showing how community input shaped the final plan.',
+        type:'milestone', status:'upcoming', date:'Dec 10',
+        owners:['rc','casa'],
+        outputs:['Optional communications products'] },
+      { id:'m13', title:'Structured feedback cycle completed',
+        sub:'Consolidated review: community fit, feasibility, measurable outcomes',
+        detail:'Root Change manages an efficient review with structured feedback tools, clear deadlines, and one consolidated comment cycle. Feedback from CASA, Steering Committee, and selected external stakeholders.',
+        type:'milestone', status:'upcoming', date:'Dec 20',
+        owners:['joint','steering'],
+        outputs:['Revised draft'] },
+      { id:'m14', title:'Final plan approved and submitted',
+        sub:'CASA and Coalition endorse plan; submitted to Governor\'s Office for Children',
+        detail:'CASA leadership and the Steering Committee formally approve the final Neighborhood Action Plan. All open decisions resolved. Submitted January 8, 2026.',
+        type:'decision', status:'upcoming', date:'Jan 8, 2026',
+        owners:['casa','steering'],
+        outputs:['Final Neighborhood Action Plan'] },
+    ]
+  }
+];
+
+const ACTIVITY = [
+  { text:'Root Change marked <strong>Kick-off meeting</strong> complete', time:'July 13 · Root Change', color:'#1B5E20' },
+  { text:'Root Change marked <strong>Planning rhythm established</strong> complete', time:'July 20 · Root Change', color:'#1B5E20' },
+  { text:'<strong>Living Evidence & Planning Map</strong> marked in progress', time:'July 25 · Root Change', color:'#7A5800' },
+  { text:'Steering Committee reviewed Phase 1 timeline — no changes', time:'July 28 · CASA', color:'#8B1A1A' },
+];
+
+function allMs() { return PHASES.flatMap(p=>p.milestones); }
+function scrollToPhase(id) {
+  const el = document.getElementById('phase-'+id);
+  if (el) el.scrollIntoView({ behavior:'smooth', block:'start' });
+}
+function sLabel(s) { return s==='done'?'Complete':s==='inprogress'?'In progress':'Upcoming'; }
+function ownerChip(key) {
+  const o = OWNERS[key];
+  return o ? `<span class="owner-chip ${o.cls}"><i class="fa-solid fa-circle" style="font-size:6px"></i>${o.label}</span>` : '';
+}
+
+function renderStatus() {
+  const all = allMs();
+  const done = all.filter(m=>m.status==='done').length;
+  const active = all.filter(m=>m.status==='inprogress');
+  const decisions = PHASES.flatMap(p=>p.milestones.filter(m=>m.type==='decision'&&m.status!=='done'));
+  const nextUp = all.find(m=>m.status==='upcoming');
+  const curPhaseIdx = PHASES.reduce((a,p,i)=>{
+    if(p.milestones.some(m=>m.status==='done'||m.status==='inprogress')) return i; return a;
+  },0);
+  const cp = PHASES[curPhaseIdx];
+  const pDone = cp.milestones.filter(m=>m.status==='done').length;
+
+  document.getElementById('status-row').innerHTML = `
+    <div class="spanel">
+      <div class="spanel-eye">Where we are</div>
+      <div class="spanel-body"><strong>${cp.name}</strong> — ${cp.label}</div>
+      <div class="spanel-sub">${pDone}/${cp.milestones.length} phase milestones done &nbsp;·&nbsp; ${done}/${all.length} overall</div>
+    </div>
+    <div class="spanel">
+      <div class="spanel-eye">Working on now</div>
+      ${active.length ? active.map(m=>`<div class="bullet-item"><span class="bullet-dot" style="background:rgba(255,255,255,0.4)"></span>${m.title}</div>`).join('') : '<div class="spanel-sub">No active milestones</div>'}
+      ${nextUp&&!active.length ? `<div class="spanel-sub">Next: ${nextUp.title}</div>` : ''}
+    </div>
+    <div class="spanel">
+      <div class="spanel-eye">Decisions needed</div>
+      ${decisions.length ? decisions.slice(0,3).map(d=>`<div class="bullet-item"><span class="bullet-dot" style="background:var(--gold)"></span>${d.title}</div>`).join('') : '<div class="spanel-sub">No pending decisions</div>'}
+    </div>
+  `;
+}
+
+function renderJourney() {
+  document.getElementById('journey').innerHTML = PHASES.map((p,i)=>{
+    const done=p.milestones.filter(m=>m.status==='done').length, total=p.milestones.length;
+    const pct=Math.round(done/total*100), allDone=done===total;
+    const anyActive=p.milestones.some(m=>m.status==='inprogress');
+    const isActive=anyActive||(!allDone&&done>0), isFuture=done===0&&!anyActive;
+    const numStyle=allDone?`background:var(--gold);color:var(--crimson-deep)`:isActive?`background:white;color:${p.color}`:`background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.25);border:1.5px solid rgba(255,255,255,0.12)`;
+    const labelColor=allDone?'rgba(255,255,255,0.65)':isActive?'var(--gold)':'rgba(255,255,255,0.28)';
+    const fillColor=allDone?'rgba(255,255,255,0.45)':isActive?'var(--gold)':'transparent';
+    return `<div class="jphase">
+      <div class="jphase-top">
+        <div class="jphase-num" style="${numStyle}">${allDone?'✓':(i+1)}</div>
+        <div class="jphase-label" style="color:${labelColor}">${p.label}</div>
+      </div>
+      <div class="jphase-track"><div class="jphase-fill" style="width:${pct}%;background:${fillColor}"></div></div>
+      <div class="jphase-count" style="color:${isFuture?'rgba(255,255,255,0.2)':'rgba(255,255,255,0.4)'}">${allDone?'Complete':isActive?done+'/'+total+' done':'Not started'}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderPipeline() {
+  document.getElementById('pipeline').innerHTML = PHASES.map(p=>{
+    const done=p.milestones.filter(m=>m.status==='done').length;
+    return `<div class="phase-block" id="phase-${p.id}">
+      <div class="phase-header" style="background:${p.hBg};border:1px solid ${p.hBorder}">
+        <div class="phase-stripe" style="background:${p.color}"></div>
+        <div>
+          <div class="phase-name" style="color:${p.color}">${p.name} — ${p.label}</div>
+          <div class="phase-dates" style="color:${p.color}">${p.dates}</div>
+        </div>
+        <div class="phase-tally" style="color:${p.color}">${done}/${p.milestones.length}</div>
+      </div>
+      <div class="ms-list">
+        ${p.milestones.map(m=>{
+          const cc=m.status==='done'?'done-check':m.status==='inprogress'?'inprogress-check':'upcoming-check';
+          const icon=m.status==='done'?'<i class="fa-solid fa-check" style="font-size:9px"></i>':m.status==='inprogress'?`<span style="width:7px;height:7px;border-radius:50%;background:${p.color};display:block;margin:auto"></span>`:'';
+          return `<div class="ms" id="ms-${m.id}" style="--pc:${p.color};--tag-bg:${p.tagBg};--tag-color:${p.tagColor}" onclick="toggleMs('${m.id}')">
+            <div class="ms-check ${cc}">${icon}</div>
+            <div class="ms-body">
+              <div class="ms-title">${m.title}</div>
+              <div class="ms-sub">${m.sub}</div>
+              <div class="ms-owner-row">
+                ${m.owners.map(ownerChip).join('')}
+              </div>
+              <div class="ms-detail">
+                <p>${m.detail}</p>
+                <div class="ms-outputs">
+                  <span style="font-size:11px;color:var(--text-muted);margin-right:4px;font-weight:600">Outputs:</span>
+                  ${m.outputs.map(o=>`<span class="out-tag">${o}</span>`).join('')}
+                </div>
+                <div class="status-btns" onclick="event.stopPropagation()">
+                  <span>Mark as:</span>
+                  ${['done','inprogress','upcoming'].map(s=>`<button class="sbtn${m.status===s?' active':''}" onclick="setStatus('${m.id}','${s}')">${sLabel(s)}</button>`).join('')}
+                </div>
+              </div>
+            </div>
+            <div class="ms-right">
+              <span class="pill pill-${m.status==='done'?'done':m.status==='inprogress'?'inprogress':'upcoming'}">${sLabel(m.status)}</span>
+              ${m.type==='decision'?'<span class="pill pill-decision has-tip">Decision<span class="tip">Requires sign-off before work can move forward</span></span>':''}
+              <span class="ms-date">${m.date}</span>
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderSidebar() {
+  const decisions = PHASES.flatMap(p=>p.milestones.filter(m=>m.type==='decision'&&m.status!=='done').map(m=>({...m,phaseColor:p.color,tagBg:p.tagBg,tagColor:p.tagColor})));
+
+  const decHtml = decisions.length ? decisions.map(d=>`
+    <div class="dec-item">
+      <div class="dec-diamond has-tip"><i class="fa-solid fa-diamond" style="font-size:7px"></i><span class="tip">Requires sign-off before work can move forward</span></div>
+      <div>
+        <div class="dec-title">${d.title}</div>
+        <div class="dec-meta">Due ${d.date}</div>
+        <div>${d.owners.map(k=>{ const o=OWNERS[k]; return o?`<span class="dec-owner ${o.cls}"><i class="fa-solid fa-circle" style="font-size:5px"></i>${o.label}</span>`:'' }).join('')}</div>
+      </div>
+    </div>`).join('') : '<div style="font-size:12px;color:var(--text-muted);padding:4px 0">No pending decisions</div>';
+
+  const feedHtml = ACTIVITY.slice().reverse().map(a=>`
+    <div class="feed-item">
+      <div class="feed-dot" style="background:${a.color}"></div>
+      <div>
+        <div class="feed-text">${a.text}</div>
+        <div class="feed-time">${a.time}</div>
+      </div>
+    </div>`).join('');
+
+  document.getElementById('sidebar').innerHTML = `
+    <div class="sidebar-label">Decisions & Activity</div>
+    <div class="side-card">
+      <div class="side-card-head" style="color:var(--crimson)">
+        <i class="fa-solid fa-diamond" style="font-size:10px"></i> Open decisions
+      </div>
+      <div class="side-card-body">${decHtml}</div>
+    </div>
+    <div class="side-card">
+      <div class="side-card-head" style="color:var(--text-muted)">
+        <i class="fa-regular fa-clock"></i> Recent activity
+      </div>
+      <div class="side-card-body">${feedHtml}</div>
+    </div>
+  `;
+}
+
+function toggleMs(id) { document.getElementById('ms-'+id).classList.toggle('open'); }
+
+function setStatus(id, status) {
+  for (const p of PHASES) {
+    const m=p.milestones.find(m=>m.id===id);
+    if (m) {
+      const prev = m.status;
+      m.status = status;
+      if (prev !== status) {
+        const label = sLabel(status).toLowerCase();
+        ACTIVITY.push({ text:`<strong>${m.title}</strong> marked ${label}`, time:'Just now · You', color: status==='done'?'#1B5E20':status==='inprogress'?'#7A5800':'#6B4040' });
+      }
+      break;
+    }
+  }
+  renderStatus(); renderJourney(); renderPipeline(); renderSidebar();
+  setTimeout(()=>{ const c=document.getElementById('ms-'+id); if(c) c.classList.add('open'); },10);
+}
+
+renderStatus(); renderJourney(); renderPipeline(); renderSidebar();
+</script>
+<!-- WELCOME MODAL -->
+<div class="modal-overlay" id="welcome-modal">
+  <div class="modal-card">
+    <div class="modal-top">
+      <button class="modal-close" onclick="closeModal()" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+      <div class="modal-eyebrow">Langley Park Neighborhood Action Plan · Root Change</div>
+      <div class="modal-headline">One shared view of the work — for everyone involved.</div>
+      <div class="modal-sub">This Progress Pipeline gives CASA, the Coalition, the Steering Committee, and Root Change a single place to see where the work stands, who owns what, and what needs a decision — without emails or status calls.</div>
+    </div>
+    <div class="modal-body">
+      <ul class="modal-points">
+        <li>
+          <div class="modal-point-icon" style="background:#F5E6E6;color:#8B1A1A"><i class="fa-solid fa-map-pin"></i></div>
+          <div><strong>See where you are.</strong> The journey bar at the top shows all four phases at a glance. Click any phase to jump straight to it.</div>
+        </li>
+        <li>
+          <div class="modal-point-icon" style="background:#FEF8E1;color:#7A5800"><i class="fa-solid fa-circle-half-stroke"></i></div>
+          <div><strong>Track what's in progress.</strong> Each milestone shows its owner, status, and outputs. Click to expand for full detail.</div>
+        </li>
+        <li>
+          <div class="modal-point-icon" style="background:#3D0000;color:#F2C12E"><i class="fa-solid fa-diamond" style="font-size:11px"></i></div>
+          <div><strong>Know what needs a decision.</strong> Decision points are flagged in gold and collected in the sidebar — so sign-offs are never buried in the workplan.</div>
+        </li>
+        <li>
+          <div class="modal-point-icon" style="background:#E8F5E9;color:#1B5E20"><i class="fa-solid fa-clock-rotate-left"></i></div>
+          <div><strong>Follow the activity.</strong> The sidebar tracks recent updates so anyone joining mid-process can get oriented fast.</div>
+        </li>
+      </ul>
+      <div class="modal-note">
+        <i class="fa-solid fa-circle-info"></i>
+        <div><strong>Illustrative build.</strong> This is a demonstration of how the tracker would work. We would finalize milestones, owners, and decision points with CASA during Phase 1 — so the tool reflects your actual process from day one.</div>
+      </div>
+      <button class="modal-btn" onclick="closeModal()">Explore the pipeline &rarr;</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function closeModal() {
+  document.getElementById('welcome-modal').classList.add('hidden');
+}
+</script>
+</body>
+</html>
